@@ -22,16 +22,27 @@
 
 import Foundation
 
-protocol Key {
+protocol KeyProtocol {
     
-    var accessibility: Accessibility { get set }
+    var accessibility: CFStringRef { get set }
     var accessGroup: CFStringRef { get set }
     init(attributes: Dictionary<String, Any>)
 }
 
-public struct GenericKey: Key {
+public class Key {
     
-    private var _accessibility:     Accessibility!
+    private var _accessibility:     CFStringRef!
+    private var _isInvisible:       CFBooleanRef!
+    
+    public init(attributes: Dictionary<String, Any>) {
+        
+        _accessibility   = kSecAttrAccessibleWhenUnlocked
+        _isInvisible     = kCFBooleanFalse
+    }
+}
+
+public class GenericKey: Key, KeyProtocol {
+    
     private var _accessGroup:       CFStringRef!
     private var _creationDate:      CFDateRef!
     private var _modificationDate:  CFDateRef!
@@ -40,13 +51,12 @@ public struct GenericKey: Key {
     private var _creator:           CFNumberRef!
     private var _type:              CFNumberRef!
     private var _label:             CFStringRef!
-    private var _isInvisible:       CFBooleanRef!
     private var _isNegative:        CFBooleanRef!
     private var _account:           CFStringRef!
     private var _service:           CFStringRef!
     private var _generic:           CFDataRef!
     
-    var accessibility: Accessibility {
+    var accessibility: CFStringRef {
         get {
             return _accessibility
         }
@@ -166,38 +176,31 @@ public struct GenericKey: Key {
         }
     }
     
-    public init(attributes: Dictionary<String, Any>) {
-        accessibility   = .WhenUnlocked
-        isInvisible     = kCFBooleanFalse
+    public required override init(attributes: Dictionary<String, Any>) {
+        
+        super.init(attributes: attributes)
+        
+        if((attributes["accessibility"]) != nil){
+            switch attributes["accessibility"] as Accessibility {
+            case .WhenUnlocked:
+                accessibility = kSecAttrAccessibleWhenUnlocked
+            default:
+                accessibility = kSecAttrAccessibleWhenUnlocked
+                
+            }
+        }
     }
-    
-    /*
-    kSecAttrAccessible
-    kSecAttrAccessGroup
-    kSecAttrCreationDate
-    kSecAttrModificationDate
-    kSecAttrDescription
-    kSecAttrComment
-    kSecAttrCreator
-    kSecAttrType
-    kSecAttrLabel
-    kSecAttrIsInvisible
-    kSecAttrIsNegative
-    kSecAttrAccount
-    kSecAttrService
-    kSecAttrGeneric
-    */
 }
 
 
-public struct InternetKey: Key {
+public class InternetKey: Key, KeyProtocol {
     
-    var accessibility: Accessibility {
+    var accessibility: CFStringRef {
         get {
-            return self.accessibility
+            return _accessibility
         }
-        set(newValue) {
-            self.accessibility = newValue
+        set {
+            _accessibility = newValue
         }
     }
     
@@ -210,19 +213,20 @@ public struct InternetKey: Key {
         }
     }
     
-    public init(attributes: Dictionary<String, Any>) {
-        accessibility   = .WhenUnlocked
-        //isInvisible     = kCFBooleanFalse
+    public override required init(attributes: Dictionary<String, Any>) {
+        super.init(attributes: attributes)
     }
 }
 
 /*
-struct Certificate: Key {
+TODO: Implement these classes
+
+public class Certificate: Key, KeyProtocol {
 }
 
-struct PrivateKey: Key {
+public class PrivateKey: Key, KeyProtocol {
 }
 
-struct Identity: Key {
+public class Identity: Key, KeyProtocol {
 }
 */
