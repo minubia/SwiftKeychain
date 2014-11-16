@@ -31,123 +31,138 @@ protocol Key {
 
 public struct GenericKey: Key {
     
+    private var _accessibility:     Accessibility!
+    private var _accessGroup:       CFStringRef!
+    private var _creationDate:      CFDateRef!
+    private var _modificationDate:  CFDateRef!
+    private var _description:       CFStringRef!
+    private var _comment:           CFStringRef!
+    private var _creator:           CFNumberRef!
+    private var _type:              CFNumberRef!
+    private var _label:             CFStringRef!
+    private var _isInvisible:       CFBooleanRef!
+    private var _isNegative:        CFBooleanRef!
+    private var _account:           CFStringRef!
+    private var _service:           CFStringRef!
+    private var _generic:           CFDataRef!
+    
     var accessibility: Accessibility {
         get {
-            return self.accessibility
+            return _accessibility
         }
-        set(newValue) {
-            self.accessibility = newValue
+        set {
+            _accessibility = newValue
         }
     }
     
     var accessGroup: CFStringRef {
         get {
-            return self.accessGroup
+            return _accessGroup
         }
-        set(newValue) {
-            self.accessGroup = newValue
+        set {
+            _accessGroup = newValue
         }
     }
     
     var creationDate: CFDateRef {
         get {
-            return self.creationDate
+            return _creationDate
         }
     }
     
     var modificationDate: CFDateRef {
         get {
-            return self.modificationDate
+            return _modificationDate
         }
     }
     
     var description: CFStringRef {
         get {
-            return self.description
+            return _description
         }
-        set(newValue) {
-            self.description = newValue
+        set {
+            _description = newValue
         }
     }
     
     var comment: CFStringRef {
         get {
-            return self.comment
+            return _comment
         }
-        set(newValue) {
-            self.comment = newValue
+        set {
+            _comment = newValue
         }
     }
     
     var creator: CFNumberRef {
         get {
-            return self.creator
+            return _creator
         }
-        set(newValue) {
-            self.creator = newValue
+        set {
+            _creator = newValue
         }
     }
     
     var type: CFNumberRef {
         get {
-            return self.type
+            return _type
         }
-        set(newValue) {
-            self.type = newValue
+        set {
+            _type = newValue
         }
     }
     
     var label: CFStringRef {
         get {
-            return self.label
+            return _label
         }
-        set(newValue) {
-            self.label = newValue
+        set {
+            _label = newValue
         }
     }
     
     var isInvisible: CFBooleanRef {
         get {
-            return self.isInvisible
+            return _isInvisible
         }
-        set(newValue) {
-            self.isInvisible = newValue
+        set {
+            _isInvisible = newValue
         }
     }
     
     var isNegative: CFBooleanRef {
         get {
-            return self.isNegative
+            return _isNegative
         }
-        set(newValue) {
-            self.isNegative = newValue
+        set {
+            _isNegative = newValue
         }
     }
     
     var account: CFStringRef {
         get {
-            return self.account
+            return _account
         }
-        set(newValue) {
-            self.account = newValue
+        set {
+            _account = newValue
         }
     }
     
     var service: CFStringRef {
         get {
-            return self.service
+            return _service
         }
-        set(newValue) {
-            self.service = newValue
+        set {
+            _service = newValue
         }
     }
     
     var generic: CFDataRef {
         get {
-            return self.generic
+            return _generic
         }
-        set(newValue) {
-            self.generic = newValue
+        set {
+            _generic = newValue
         }
     }
     
