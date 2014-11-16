@@ -27,17 +27,22 @@ class SwiftKeychainTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
     }
     
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
     
-    func testAddKey() {
-        var kc: SwiftyKeychain = SwiftyKeychain(name: "test")
-        let keychain = SwiftyKeychain(name: "test")
+    func testAddGenericKey() {
+
+        var attributes: [String: Any] = [
+            "accessibility":    Accessibility.WhenUnlocked,
+            "description":      "test description",
+            "comment":          "test comment"
+        ]
+        
+        let key = GenericKey(attributes: attributes)
+        SwiftKeychain.add(key)
     }
     
 }
