@@ -55,6 +55,7 @@ public class GenericKey: Key, KeyProtocol {
     private var _account:           CFStringRef!
     private var _service:           CFStringRef!
     private var _generic:           CFDataRef!
+    private var _password:          NSData!
     
     var accessibility: CFStringRef {
         get {
@@ -176,6 +177,15 @@ public class GenericKey: Key, KeyProtocol {
         }
     }
     
+    var password: NSString {
+        get {
+            return NSString(data: _password, encoding: NSUTF8StringEncoding)!
+        }
+        set {
+            _password = newValue.dataUsingEncoding(NSUTF8StringEncoding)
+        }
+    }
+    
     public required override init(attributes: Dictionary<String, Any>) {
         
         super.init(attributes: attributes)
@@ -189,6 +199,9 @@ public class GenericKey: Key, KeyProtocol {
                 
             }
         }
+        
+        account     = attributes["username"] as String
+        password    = attributes["password"] as String
     }
 }
 

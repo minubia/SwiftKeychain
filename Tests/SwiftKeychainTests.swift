@@ -36,13 +36,12 @@ class SwiftKeychainTests: XCTestCase {
     func testAddGenericKey() {
 
         var attributes: [String: Any] = [
-            "accessibility":    Accessibility.WhenUnlocked,
-            "description":      "test description",
-            "comment":          "test comment"
+            "username":         "admin",
+            "password":         "demo",
+            "accessibility":    Accessibility.WhenUnlocked
         ]
         
         let key = GenericKey(attributes: attributes)
-        SwiftKeychain.add(key)
+        let statusCode: ResultCode = SwiftKeychain.add(key)
     }
-    
 }

@@ -75,6 +75,73 @@ public enum Accessibility : RawRepresentable {
     }	
 }
 
-public func add<Key>(key: Key ){
+public enum ResultCode : Int32, Printable {
     
+    case success                = 0
+    case unimplemented          = -4
+    case param                  = -50
+    case allocate               = -108
+    case notAvailable           = -25291
+    case authFailed             = -25293
+    case duplicateItem          = -25299
+    case itemNotFound           = -25300
+    case interactionNotAllowed  = -25308
+    case decode                 = -26275
+    
+    
+    public var description : String {
+        get {
+            switch(self) {
+            case .success:
+                return "No error"
+            case .unimplemented:
+                return "Function or operation not implemented"
+            case .param:
+                return "One or more parameters passed to the function were not valid"
+            case .allocate:
+                return "Failed to allocate memory"
+            case .notAvailable:
+                return "No trust results are available"
+            case .authFailed:
+                return "Authorization/Authentication failed"
+            case .duplicateItem:
+                return "The item already exists"
+            case .itemNotFound:
+                return "The item cannot be found"
+            case .interactionNotAllowed:
+                return "Interaction with the Security Server is not allowed"
+            case .decode:
+                return "Unable to decode the provided data"
+            default:
+                return "Unknown"
+            }
+        }
+    }
+}
+
+public func add<Key>(key: Key ) -> ResultCode {
+    
+    var resultCode : ResultCode!
+    let kSecClassKey = NSString(format: kSecClass)
+    
+    if key is GenericKey{
+        
+        let genericKey = key as GenericKey
+        
+        let kSecClassValue      = NSString(format: kSecClassGenericPassword)
+        let kSecAttrAcountKey   = NSString(format: kSecAttrAccount)
+        let kSecValueDataKey    = NSString(format: kSecValueData)
+        
+        var attributes = [
+            kSecClassKey : kSecClassValue,
+            kSecAttrAcountKey : genericKey.account
+            ] as NSMutableDictionary
+        
+        attributes[kSecValueDataKey] = genericKey.password.dataUsingEncoding(NSUTF8StringEncoding)
+        
+        let statusCode: OSStatus = SecItemAdd(attributes, nil);
+        resultCode = ResultCode(rawValue: statusCode)
+    }
+    
+    return resultCode
 }
