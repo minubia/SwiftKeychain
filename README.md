@@ -28,6 +28,10 @@ We plan on supporting CocoaPods in the future. But at this moment CocoaPods does
 3. In Xcode, make sure the blue project icon of your project is still selected and select the `Build Phases` tab and expand the `Target Dependencies` group. Click on the `+` sign, select the `SwiftKeychain` target under the `SwiftKeychain` project and click the `Add` button
 
 ## Usage
+In order to use SwiftKeychain, you'll need to import it first
+```swift
+import SwiftKeychain
+```
 
 ### Generic Key
 Generic Key are used to store simple username/password credentials 
