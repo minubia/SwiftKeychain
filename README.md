@@ -44,7 +44,7 @@ let key = GenericKey(attributes: attributes)
 ```
 #### Add Key
 ```swift
-let statusCode: ResultCode = SwiftKeychain.add(key)
+let resultCode: ResultCode = SwiftKeychain.add(key)
 ```
 
 #### Update Key

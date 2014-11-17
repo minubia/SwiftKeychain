@@ -42,6 +42,6 @@ class SwiftKeychainTests: XCTestCase {
         ]
         
         let key = GenericKey(attributes: attributes)
-        let statusCode: ResultCode = SwiftKeychain.add(key)
+        let resultCode: ResultCode = SwiftKeychain.add(key)
     }
 }
