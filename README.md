@@ -1,3 +1,5 @@
+![Test Status](https://travis-ci.org/minubia/SwiftKeychain.svg?branch=master)
+
 #SwiftKeychain
 
 SwiftKeychain is a library written in swift, for Apple's password management system called Keychain
