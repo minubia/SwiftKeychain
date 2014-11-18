@@ -35,6 +35,15 @@ public class Key {
     private var _accessGroup:       CFStringRef = ""
     private var _isInvisible:       CFBooleanRef = kCFBooleanFalse
     
+    var accessGroup: CFStringRef {
+        get {
+            return _accessGroup
+        }
+        set {
+            _accessGroup = newValue
+        }
+    }
+    
     public init(attributes: Dictionary<String, Any>) {
         
         if((attributes["accessibility"]) != nil){
@@ -59,10 +68,10 @@ public class GenericKey: Key, KeyProtocol {
     
     private var _creationDate:      CFDateRef!
     private var _modificationDate:  CFDateRef!
-    private var _description:       CFStringRef!
-    private var _comment:           CFStringRef!
+    private var _description:       CFStringRef = ""
+    private var _comment:           CFStringRef = ""
     private var _creator:           CFNumberRef!
-    private var _label:             CFStringRef!
+    private var _label:             CFStringRef = ""
     private var _account:           CFStringRef!
     private var _generic:           CFDataRef!
     private var _password:          NSData!
@@ -73,15 +82,6 @@ public class GenericKey: Key, KeyProtocol {
         }
         set {
             _accessibility = newValue
-        }
-    }
-    
-    var accessGroup: CFStringRef {
-        get {
-            return _accessGroup
-        }
-        set {
-            _accessGroup = newValue
         }
     }
     
@@ -197,15 +197,6 @@ public class InternetKey: Key, KeyProtocol {
         }
         set {
             _accessibility = newValue
-        }
-    }
-    
-    var accessGroup: CFStringRef {
-        get {
-            return self.accessGroup
-        }
-        set(newValue) {
-            self.accessGroup = newValue
         }
     }
     

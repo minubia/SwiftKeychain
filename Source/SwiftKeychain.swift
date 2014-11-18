@@ -123,9 +123,8 @@ public func add<Key>(key: Key ) -> ResultCode {
     
     var resultCode : ResultCode!
     let kSecClassKey = NSString(format: kSecClass)
-    
+
     if key is GenericKey{
-        
         let genericKey = key as GenericKey
         
         // =============== Mandatory Attributes ===============
@@ -140,12 +139,12 @@ public func add<Key>(key: Key ) -> ResultCode {
         let kSecAttrCommentKey = NSString(format: kSecAttrComment)
         let kSecAttrLabelKey = NSString(format: kSecAttrLabel)
         let kSecAttrServiceKey = NSString(format: kSecAttrService)
-        
+
         var attributes = [
             kSecClassKey:           kSecClassValue,
             kSecAttrAccountKey:     genericKey.account,
             kSecAttrAccessibleKey:  genericKey.accessibility,
-            kSecAttrAccessGroupKey: genericKey.accessGroup,
+            //kSecAttrAccessGroupKey: genericKey.accessGroup,
             kSecAttrDescriptionKey: genericKey.description,
             kSecAttrCommentKey:     genericKey.comment,
             kSecAttrLabelKey:       genericKey.label,
@@ -153,7 +152,7 @@ public func add<Key>(key: Key ) -> ResultCode {
             ] as NSMutableDictionary
         
         attributes[kSecValueDataKey] = genericKey.password.dataUsingEncoding(NSUTF8StringEncoding)
-        
+
         let statusCode: OSStatus = SecItemAdd(attributes, nil);
         resultCode = ResultCode(rawValue: statusCode)
     }
