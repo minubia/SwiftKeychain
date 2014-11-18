@@ -31,29 +31,39 @@ protocol KeyProtocol {
 
 public class Key {
     
-    private var _accessibility:     CFStringRef!
-    private var _isInvisible:       CFBooleanRef!
+    private var _accessibility:     CFStringRef = kSecAttrAccessibleWhenUnlocked
+    private var _accessGroup:       CFStringRef = ""
+    private var _isInvisible:       CFBooleanRef = kCFBooleanFalse
     
     public init(attributes: Dictionary<String, Any>) {
         
-        _accessibility   = kSecAttrAccessibleWhenUnlocked
-        _isInvisible     = kCFBooleanFalse
+        if((attributes["accessibility"]) != nil){
+            switch attributes["accessibility"] as Accessibility {
+            case .WhenUnlocked:
+                _accessibility = kSecAttrAccessibleWhenUnlocked
+            default:
+                _accessibility = kSecAttrAccessibleWhenUnlocked
+                
+            }
+        }
+        
+        if((attributes["accessgroup"]) != nil){
+            _accessGroup    = attributes["accessgroup"] as CFStringRef
+        }
     }
 }
 
 public class GenericKey: Key, KeyProtocol {
     
-    private var _accessGroup:       CFStringRef!
+    private var _service:           CFStringRef!
+    
     private var _creationDate:      CFDateRef!
     private var _modificationDate:  CFDateRef!
     private var _description:       CFStringRef!
     private var _comment:           CFStringRef!
     private var _creator:           CFNumberRef!
-    private var _type:              CFNumberRef!
     private var _label:             CFStringRef!
-    private var _isNegative:        CFBooleanRef!
     private var _account:           CFStringRef!
-    private var _service:           CFStringRef!
     private var _generic:           CFDataRef!
     private var _password:          NSData!
     
@@ -114,15 +124,6 @@ public class GenericKey: Key, KeyProtocol {
         }
     }
     
-    var type: CFNumberRef {
-        get {
-            return _type
-        }
-        set {
-            _type = newValue
-        }
-    }
-    
     var label: CFStringRef {
         get {
             return _label
@@ -138,15 +139,6 @@ public class GenericKey: Key, KeyProtocol {
         }
         set {
             _isInvisible = newValue
-        }
-    }
-    
-    var isNegative: CFBooleanRef {
-        get {
-            return _isNegative
-        }
-        set {
-            _isNegative = newValue
         }
     }
     
@@ -189,16 +181,7 @@ public class GenericKey: Key, KeyProtocol {
     public required override init(attributes: Dictionary<String, Any>) {
         
         super.init(attributes: attributes)
-        
-        if((attributes["accessibility"]) != nil){
-            switch attributes["accessibility"] as Accessibility {
-            case .WhenUnlocked:
-                accessibility = kSecAttrAccessibleWhenUnlocked
-            default:
-                accessibility = kSecAttrAccessibleWhenUnlocked
-                
-            }
-        }
+        _service        = NSBundle.mainBundle().bundleIdentifier ?? ""
         
         account     = attributes["username"] as String
         password    = attributes["password"] as String

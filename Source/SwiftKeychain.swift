@@ -128,13 +128,28 @@ public func add<Key>(key: Key ) -> ResultCode {
         
         let genericKey = key as GenericKey
         
+        // =============== Mandatory Attributes ===============
         let kSecClassValue      = NSString(format: kSecClassGenericPassword)
-        let kSecAttrAcountKey   = NSString(format: kSecAttrAccount)
+        let kSecAttrAccountKey   = NSString(format: kSecAttrAccount)
         let kSecValueDataKey    = NSString(format: kSecValueData)
         
+        // =============== Optional Attributes ===============
+        let kSecAttrAccessibleKey = NSString(format: kSecAttrAccessible)
+        let kSecAttrAccessGroupKey = NSString(format: kSecAttrAccessGroup)
+        let kSecAttrDescriptionKey = NSString(format: kSecAttrDescription)
+        let kSecAttrCommentKey = NSString(format: kSecAttrComment)
+        let kSecAttrLabelKey = NSString(format: kSecAttrLabel)
+        let kSecAttrServiceKey = NSString(format: kSecAttrService)
+        
         var attributes = [
-            kSecClassKey : kSecClassValue,
-            kSecAttrAcountKey : genericKey.account
+            kSecClassKey:           kSecClassValue,
+            kSecAttrAccountKey:     genericKey.account,
+            kSecAttrAccessibleKey:  genericKey.accessibility,
+            kSecAttrAccessGroupKey: genericKey.accessGroup,
+            kSecAttrDescriptionKey: genericKey.description,
+            kSecAttrCommentKey:     genericKey.comment,
+            kSecAttrLabelKey:       genericKey.label,
+            kSecAttrServiceKey:     genericKey.service
             ] as NSMutableDictionary
         
         attributes[kSecValueDataKey] = genericKey.password.dataUsingEncoding(NSUTF8StringEncoding)
