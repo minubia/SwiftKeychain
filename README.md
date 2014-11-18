@@ -44,13 +44,67 @@ var attributes: [String: Any] = [
 ]
 let key = GenericKey(attributes: attributes)
 ```
-#### Add Key
+
+####Optional Attributes
+#####Accessibility
+ This value indicates when your app can access the data in a keychain item. The default value for this attribute is `Accessibility.WhenUnlocked`
+The following values are allowed:
+
+ - Accessibility.WhenUnlocked
+ - Accessibility.AfterFirstUnlock
+ - Accessibility.Always
+ - Accessibility.WhenPasscodeSetThisDeviceOnly
+ - Accessibility.WhenUnlockedThisDeviceOnly
+ - Accessibility.AfterFirstUnlockThisDeviceOnly
+ - Accessibility.AlwaysThisDeviceOnly
+
+```swift
+var attributes: [String: Any] = [
+    "accessibility":    Accessibility.WhenUnlocked
+]
+```
+#####Service
+The service that is associated with the key. By default SwiftKeychain will use your app's bundle ID if this attribute is omitted.
+```swift
+var attributes: [String: Any] = [
+    "service":    NSBundle.mainBundle().bundleIdentifier
+]
+```
+#####Access Group 
+Access groups can be used to share keychain items among two or more applications. By default no access group will be set meaning only the application that set the keychain item will be able to access it.
+```swift
+var attributes: [String: Any] = [
+    "accessgroup":    "swiftkeychaingroup"
+]
+```
+#####Description
+A text describing this keychain item.
+```swift
+var attributes: [String: Any] = [
+    "description":      "SwiftKeychain Test Account"
+]
+```
+#####Comment
+A comment section
+```swift
+var attributes: [String: Any] = [
+    "comment":          "Used for testing purposes"
+]
+```
+#####Label
+A label for your keychain item
+```swift
+var attributes: [String: Any] = [
+    "label":            "Test Account"
+]
+```
+
+### Add Key
 ```swift
 let resultCode: ResultCode = SwiftKeychain.add(key)
 ```
-
-#### Update Key
+### Update Key
 Not yet available
 
-#### Delete Key
+### Delete Key
 Not yet available
