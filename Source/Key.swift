@@ -50,9 +50,20 @@ public class Key {
             switch attributes["accessibility"] as Accessibility {
             case .WhenUnlocked:
                 _accessibility = kSecAttrAccessibleWhenUnlocked
+            case .AfterFirstUnlock:
+                _accessibility = kSecAttrAccessibleAfterFirstUnlock
+            case .AfterFirstUnlockThisDeviceOnly:
+                _accessibility = kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly
+            case .Always:
+                _accessibility = kSecAttrAccessibleAlways
+            case .AlwaysThisDeviceOnly:
+                _accessibility = kSecAttrAccessibleAlwaysThisDeviceOnly
+            case .WhenPasscodeSetThisDeviceOnly:
+                _accessibility = kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly
+            case .WhenUnlockedThisDeviceOnly:
+                _accessibility = kSecAttrAccessibleWhenUnlockedThisDeviceOnly
             default:
-                _accessibility = kSecAttrAccessibleWhenUnlocked
-                
+                _accessibility = kSecAttrAccessibleWhenUnlocked                
             }
         }
         
