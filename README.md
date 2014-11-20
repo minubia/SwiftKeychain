@@ -9,7 +9,12 @@ SwiftKeychain is a library written in swift, for Apple's password management sys
 1. [Requirements](#requirements)
 1. [Installation](#installation)
 1. [Usage](#usage)
-	- [Generic Key](#generic-key)
+	- [Keys](#keys)
+		- [Generic Key](#generic-key)
+	- [Add Key](#add-key)
+	- [Find Key](#find-key)
+	- [Update Key](#update-key)
+	- [Delete Key](#delete-key)
 	
 ## Requirements
 
@@ -18,12 +23,12 @@ SwiftKeychain is a library written in swift, for Apple's password management sys
 
 ##Installation
 
-We plan on supporting CocoaPods in the future. But at this moment CocoaPods does not support Swift libraries. Until then you can follow these steps to install this library in your project
+We plan on supporting CocoaPods in the future. But at this moment CocoaPods does not support Swift libraries. Until then you can follow these steps to include SwiftKeychain in your project
 
 1. You can either clone SwiftKeychain or add it as a git submodule to your project. We recommend the latter.
   * To clone SwiftKeychain simply execute the following command
 	`git clone https://github.com/minubia/SwiftKeychain.git`
-  * To add SwiftKeychain as a submodule, first make sure you change the shell's current working directory to the root of your project. Now execute the following command
+  * To add SwiftKeychain as a submodule, first make sure you change the shell's current working directory to the root of your project and then execute the following command
 	`git submodule add https://github.com/minubia/SwiftKeychain.git`
 
 2. Navigate to the SwiftKeychain folder. Now drag and drop the file `SwiftKeychain.xcodeproj` onto the blue project icon of your project. This icon can be found in the file navigator of Xcode
@@ -36,7 +41,8 @@ In order to use SwiftKeychain, you'll need to import it first
 import SwiftKeychain
 ```
 
-### Generic Key
+### Keys
+#### Generic Key
 Generic Key are used to store simple username/password credentials 
 ```swift
 var attributes: [String: Any] = [
@@ -46,8 +52,8 @@ var attributes: [String: Any] = [
 let key = GenericKey(attributes: attributes)
 ```
 
-####Optional Attributes
-#####Accessibility
+#####Optional Attributes
+######Accessibility
  This value indicates when your app can access the data in a keychain item. The default value for this attribute is `Accessibility.WhenUnlocked`
 The following values are allowed:
 
@@ -61,51 +67,87 @@ The following values are allowed:
 
 ```swift
 var attributes: [String: Any] = [
-    "accessibility":    Accessibility.WhenUnlocked
+    "accessibility":	Accessibility.WhenUnlocked
 ]
 ```
-#####Service
+######Service
 The service that is associated with the key. By default SwiftKeychain will use your app's bundle ID if this attribute is omitted.
 ```swift
 var attributes: [String: Any] = [
-    "service":    NSBundle.mainBundle().bundleIdentifier
+    "service":	NSBundle.mainBundle().bundleIdentifier
 ]
 ```
-#####Access Group 
+######Access Group 
 Access groups can be used to share keychain items among two or more applications. By default no access group will be set meaning only the application that set the keychain item will be able to access it.
 ```swift
 var attributes: [String: Any] = [
-    "accessgroup":    "swiftkeychaingroup"
+    "accessgroup":	"swiftkeychaingroup"
 ]
 ```
-#####Description
+######Description
 A text describing this keychain item.
 ```swift
 var attributes: [String: Any] = [
-    "description":      "SwiftKeychain Test Account"
+    "description":	"SwiftKeychain Test Account"
 ]
 ```
-#####Comment
+######Comment
 A comment section
 ```swift
 var attributes: [String: Any] = [
-    "comment":          "Used for testing purposes"
+    "comment":	"Used for testing purposes"
 ]
 ```
-#####Label
+######Label
 A label for your keychain item
 ```swift
 var attributes: [String: Any] = [
-    "label":            "Test Account"
+    "label":	"Test Account"
 ]
 ```
 
 ### Add Key
 ```swift
+var attributes: [String: Any] = [
+	"username":			"admin",
+	"password":			"demo",
+	"accessibility":	Accessibility.WhenUnlocked,
+	"service":			NSBundle.mainBundle().bundleIdentifier,
+	"accessgroup":		"swiftkeychaingroup",
+	"description":		"SwiftKeychain Test Account",
+	"comment":			"Used for testing purposes",
+	"label":			"Test Account"
+]
+let key = GenericKey(attributes: attributes)
 let resultCode: ResultCode = SwiftKeychain.add(key)
 ```
+
+### Find Key
+```swift
+var attributes: [String: Any] = [
+	"username": "admin"
+]
+let key = GenericKey(attributes: attributes)
+let result = SwiftKeychain.find(key)
+```
+
 ### Update Key
-Not yet available
+```swift
+let newPassword = "newpassword"
+
+var attributes: [String: Any] = [
+	"username": "admin",
+	"password": newPassword
+]
+
+let key = GenericKey(attributes: attributes)
+let resultCode: ResultCode = SwiftKeychain.update(key)
+```
 
 ### Delete Key
 Not yet available
+
+##License
+Copyright © 2014 [Minubia](http://www.minubia.com)
+
+MIT license - [http://www.opensource.org/licenses/mit-license.php](http://www.opensource.org/licenses/mit-license.php)
