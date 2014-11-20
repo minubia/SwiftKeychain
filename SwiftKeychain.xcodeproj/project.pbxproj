@@ -11,7 +11,7 @@
 		AB84DBA81A0F49B10018AD57 /* SwiftKeychain.h in Headers */ = {isa = PBXBuildFile; fileRef = AB84DBA71A0F49B10018AD57 /* SwiftKeychain.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		AB84DBAE1A0F49B10018AD57 /* SwiftKeychain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB84DBA21A0F49B10018AD57 /* SwiftKeychain.framework */; };
 		AB84DBB51A0F49B10018AD57 /* SwiftKeychainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB84DBB41A0F49B10018AD57 /* SwiftKeychainTests.swift */; };
-		AB84DBBF1A0F49DF0018AD57 /* SwiftKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB84DBBE1A0F49DF0018AD57 /* SwiftKeychain.swift */; };
+		ABB158E81A1D54E400B48769 /* SwiftKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB84DBBE1A0F49DF0018AD57 /* SwiftKeychain.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -215,8 +215,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AB84DBBF1A0F49DF0018AD57 /* SwiftKeychain.swift in Sources */,
 				AB0979121A18CA9700FBA9D8 /* Key.swift in Sources */,
+				ABB158E81A1D54E400B48769 /* SwiftKeychain.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

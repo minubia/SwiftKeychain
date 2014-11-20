@@ -159,3 +159,44 @@ public func add<Key>(key: Key ) -> ResultCode {
     
     return resultCode
 }
+
+public func find(key: Key) -> (resultCode: ResultCode, result: AnyObject) {
+    
+    var resultCode :    ResultCode!
+    var output:         AnyObject!
+    let kSecClassKey = NSString(format: kSecClass)
+    
+    if key is GenericKey{
+        let genericKey = key as GenericKey
+        
+        var keychainQuery: NSMutableDictionary = NSMutableDictionary(
+            objects:    [
+                NSString(format: kSecClassGenericPassword),
+                genericKey.service,
+                genericKey.account,
+                kCFBooleanTrue,
+                NSString(format: kSecMatchLimitOne),
+            ],
+            forKeys:    [
+                NSString(format: kSecClass),
+                NSString(format: kSecAttrService),
+                NSString(format: kSecAttrAccount),
+                NSString(format: kSecReturnData),
+                NSString(format: kSecMatchLimit),
+            ]
+        )
+        
+        var result: Unmanaged<AnyObject>?
+        let statusCode: OSStatus = SecItemCopyMatching(keychainQuery, &result);        
+        resultCode = ResultCode(rawValue: statusCode)
+
+        let opaque = result?.toOpaque()
+        if let op = opaque? {
+            
+            let retrievedData = Unmanaged<NSData>.fromOpaque(op).takeUnretainedValue()
+            output = NSString(data: retrievedData, encoding: NSUTF8StringEncoding)
+        }
+    }
+    
+    return (resultCode, output)
+}

@@ -195,7 +195,9 @@ public class GenericKey: Key, KeyProtocol {
         _service        = NSBundle.mainBundle().bundleIdentifier ?? ""
         
         account     = attributes["username"] as String
-        password    = attributes["password"] as String
+        if((attributes["password"]) != nil){
+            password    = attributes["password"] as String
+        }
     }
 }
 

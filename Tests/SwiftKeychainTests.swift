@@ -30,18 +30,70 @@ class SwiftKeychainTests: XCTestCase {
     }
     
     override func tearDown() {
+        deleteTestKey()
         super.tearDown()
     }
     
     func testAddGenericKey() {
-
+        
         var attributes: [String: Any] = [
-            "username":         "admin",
-            "password":         "demo",
-            "accessibility":    Accessibility.WhenUnlocked
+        "username":         "admin",
+        "password":         "demo",
+        "accessibility":    Accessibility.WhenUnlocked,
+        "service":          NSBundle.mainBundle().bundleIdentifier,
+        "accessgroup":      "swiftkeychaingroup",
+        "description":      "SwiftKeychain Test Account",
+        "comment":          "Used for testing purposes",
+        "label":            "Test Account"
         ]
         
         let key = GenericKey(attributes: attributes)
         let resultCode: ResultCode = SwiftKeychain.add(key)
+
+        XCTAssertEqual(resultCode, ResultCode.success)
+    }
+    
+    func testFindKey() {
+        
+        // =============== Add A Test Key ===============
+        var attributes: [String: Any] = [
+            "username":         "admin",
+            "password":         "demo",
+            "accessibility":    Accessibility.WhenUnlocked,
+            "service":          NSBundle.mainBundle().bundleIdentifier,
+            "accessgroup":      "swiftkeychaingroup",
+            "description":      "SwiftKeychain Test Account",
+            "comment":          "Used for testing purposes",
+            "label":            "Test Account"
+        ]
+        
+        let key = GenericKey(attributes: attributes)
+        let resultCode: ResultCode = SwiftKeychain.add(key)        
+        
+        var keyToBeFoundAttributes: [String: Any] = [
+            "username":         "admin"
+        ]
+        
+        let keyToBeFound = GenericKey(attributes: keyToBeFoundAttributes)
+        // =============== Find a Key ===============
+        let result = SwiftKeychain.find(keyToBeFound)
+        XCTAssertEqual(result.resultCode, ResultCode.success)
+    }
+    
+    func deleteTestKey() {
+        
+        var keychainQuery: NSMutableDictionary = NSMutableDictionary(
+            objects:    [
+                NSString(format: kSecClassGenericPassword),
+                "",
+                "admin"
+            ],
+            forKeys:    [
+                NSString(format: kSecClass),
+                NSString(format: kSecAttrService),
+                NSString(format: kSecAttrAccount)
+            ]
+        )
+        let statusCode: OSStatus = SecItemDelete(keychainQuery);
     }
 }
