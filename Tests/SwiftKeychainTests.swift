@@ -80,6 +80,49 @@ class SwiftKeychainTests: XCTestCase {
         XCTAssertEqual(result.resultCode, ResultCode.success)
     }
     
+    func testUpdateKey() {
+        
+        // =============== Add A Test Key ===============
+        var attributes: [String: Any] = [
+            "username": "admin",
+            "password": "demo",
+            "accessibility": Accessibility.WhenUnlocked,
+            "service": NSBundle.mainBundle().bundleIdentifier,
+            "accessgroup": "swiftkeychaingroup",
+            "description": "SwiftKeychain Test Account",
+            "comment": "Used for testing purposes",
+            "label": "Test Account"
+        ]
+        let key = GenericKey(attributes: attributes)
+        let addResultCode: ResultCode = SwiftKeychain.add(key)
+        XCTAssertEqual(addResultCode, ResultCode.success)
+        
+        // =============== Update a Key ===============
+        
+        let newPassword = "newpassword"
+        
+        var keyToBeUpdatedAttributes: [String: Any] = [
+            "username": "admin",
+            "password": newPassword
+        ]
+        let keyToBeUpdated = GenericKey(attributes: keyToBeUpdatedAttributes)
+        
+        let updateResultCode: ResultCode = SwiftKeychain.update(keyToBeUpdated)
+        XCTAssertEqual(updateResultCode, ResultCode.success)
+        
+        // =============== Find a Key ===============
+        
+        var keyToBeFoundAttributes: [String: Any] = [
+            "username": "admin"
+        ]
+        let keyToBeFound = GenericKey(attributes: keyToBeFoundAttributes)
+        
+        let searchResult = SwiftKeychain.find(keyToBeFound)
+        XCTAssertEqual(searchResult.resultCode, ResultCode.success)
+        
+        XCTAssertEqual(searchResult.result as String, newPassword)
+    }
+    
     func deleteTestKey() {
         
         var keychainQuery: NSMutableDictionary = NSMutableDictionary(

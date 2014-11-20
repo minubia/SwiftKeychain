@@ -200,3 +200,34 @@ public func find(key: Key) -> (resultCode: ResultCode, result: AnyObject) {
     
     return (resultCode, output)
 }
+
+public func update<Key>(key: Key ) -> ResultCode {
+    
+    var resultCode : ResultCode!
+    let kSecClassKey = NSString(format: kSecClass)
+    
+    if key is GenericKey{
+        let genericKey = key as GenericKey
+        
+        // =============== Query to match the key to be updated ===============
+        var keychainQuery: NSMutableDictionary = NSMutableDictionary(
+            objects: [
+                NSString(format: kSecClassGenericPassword),
+                genericKey.account
+            ],
+            forKeys: [
+                NSString(format: kSecClass),
+                NSString(format: kSecAttrAccount)
+            ]
+        )
+
+        // =============== Attributes to be updated ===============
+
+        var attributes = NSMutableDictionary()
+        attributes[NSString(format: kSecValueData)] = genericKey.password.dataUsingEncoding(NSUTF8StringEncoding)
+        
+        let statusCode: OSStatus = SecItemUpdate(keychainQuery,attributes);
+        resultCode = ResultCode(rawValue: statusCode)
+    }
+    return resultCode
+}
