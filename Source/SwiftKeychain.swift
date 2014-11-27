@@ -163,7 +163,7 @@ public func add<Key>(key: Key ) -> ResultCode {
 public func find(key: Key) -> (resultCode: ResultCode, result: AnyObject) {
     
     var resultCode :    ResultCode!
-    var output:         AnyObject!
+    var output:         AnyObject! = ""
     let kSecClassKey = NSString(format: kSecClass)
     
     if key is GenericKey{
