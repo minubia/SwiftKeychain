@@ -24,16 +24,41 @@ import Foundation
 
 protocol KeyProtocol {
     
-    var accessibility: CFStringRef { get set }
-    var accessGroup: CFStringRef { get set }
-    init(attributes: Dictionary<String, Any>)
+    var accessibility:  CFTypeRef { get set }
+    var accessGroup:    CFStringRef { get set }
+    var label:          CFStringRef { get set }
 }
 
-public class Key {
+protocol PasswordKeyProtocol: KeyProtocol {
     
-    private var _accessibility:     CFStringRef = kSecAttrAccessibleWhenUnlocked
+    var account:            CFStringRef { get set }
+    var isNegative:         CFBooleanRef { get set }
+    var description:        CFStringRef { get set }
+    var comment:            CFStringRef { get set }
+    var creator:            CFNumberRef { get set }
+    var type:               CFNumberRef { get set }
+    var isInvisible:        CFBooleanRef { get set }
+    var creationDate:       CFDateRef { get }
+    var modificationDate:   CFDateRef { get }
+    
+    var password:           NSString { get set }
+}
+
+
+public class Key: KeyProtocol {
+    
+    private var _accessibility:     CFTypeRef = kSecAttrAccessibleWhenUnlocked
     private var _accessGroup:       CFStringRef = ""
-    private var _isInvisible:       CFBooleanRef = kCFBooleanFalse
+    private var _label:             CFStringRef = ""
+    
+    var accessibility: CFTypeRef {
+        get {
+            return _accessibility
+        }
+        set {
+            _accessibility = newValue
+        }
+    }
     
     var accessGroup: CFStringRef {
         get {
@@ -41,6 +66,15 @@ public class Key {
         }
         set {
             _accessGroup = newValue
+        }
+    }
+    
+    var label: CFStringRef {
+        get {
+            return _label
+        }
+        set {
+            _label = newValue
         }
     }
     
@@ -70,31 +104,26 @@ public class Key {
         if((attributes["accessgroup"]) != nil){
             _accessGroup    = attributes["accessgroup"] as CFStringRef
         }
+        
+        if((attributes["label"]) != nil){
+            _label    = attributes["label"] as CFStringRef
+        }
     }
 }
 
-public class GenericKey: Key, KeyProtocol {
-    
-    private var _service:           CFStringRef!
+public class PasswordKey: Key, PasswordKeyProtocol {
     
     private var _creationDate:      CFDateRef!
     private var _modificationDate:  CFDateRef!
     private var _description:       CFStringRef = ""
     private var _comment:           CFStringRef = ""
     private var _creator:           CFNumberRef!
-    private var _label:             CFStringRef = ""
     private var _account:           CFStringRef!
-    private var _generic:           CFDataRef!
-    private var _password:          NSData!
+    private var _isInvisible:       CFBooleanRef!
+    private var _isNegative:        CFBooleanRef!
+    private var _type:              CFNumberRef!
     
-    var accessibility: CFStringRef {
-        get {
-            return _accessibility
-        }
-        set {
-            _accessibility = newValue
-        }
-    }
+    private var _password:          NSData!
     
     var creationDate: CFDateRef {
         get {
@@ -135,12 +164,12 @@ public class GenericKey: Key, KeyProtocol {
         }
     }
     
-    var label: CFStringRef {
+    var account: CFStringRef {
         get {
-            return _label
+            return _account
         }
         set {
-            _label = newValue
+            _account = newValue
         }
     }
     
@@ -153,14 +182,47 @@ public class GenericKey: Key, KeyProtocol {
         }
     }
     
-    var account: CFStringRef {
+    var isNegative: CFBooleanRef {
         get {
-            return _account
+            return _isNegative
         }
         set {
-            _account = newValue
+            _isNegative = newValue
         }
     }
+    
+    var type: CFNumberRef {
+        get {
+            return _type
+        }
+        set {
+            _type = newValue
+        }
+    }
+    
+    var password: NSString {
+        get {
+            return NSString(data: _password, encoding: NSUTF8StringEncoding)!
+        }
+        set {
+            _password = newValue.dataUsingEncoding(NSUTF8StringEncoding)
+        }
+    }
+    
+    public override init(attributes: Dictionary<String, Any>){
+        
+        super.init(attributes: attributes)
+        account     = attributes["username"] as String
+        if((attributes["password"]) != nil){
+        password    = attributes["password"] as String
+        }
+    }
+}
+
+public class GenericKey: PasswordKey {
+    
+    private var _service:           CFStringRef = ""
+    private var _generic:           CFDataRef!
     
     var service: CFStringRef {
         get {
@@ -180,46 +242,26 @@ public class GenericKey: Key, KeyProtocol {
         }
     }
     
-    var password: NSString {
-        get {
-            return NSString(data: _password, encoding: NSUTF8StringEncoding)!
-        }
-        set {
-            _password = newValue.dataUsingEncoding(NSUTF8StringEncoding)
-        }
-    }
-    
     public required override init(attributes: Dictionary<String, Any>) {
         
         super.init(attributes: attributes)
-        _service        = NSBundle.mainBundle().bundleIdentifier ?? ""
         
-        account     = attributes["username"] as String
-        if((attributes["password"]) != nil){
-            password    = attributes["password"] as String
+         _service        = NSBundle.mainBundle().bundleIdentifier ?? ""
+        if((attributes["service"]) is String){
+            _service = attributes["service"] as CFStringRef
+        }        
+        
+        if((attributes["generic"]) != nil){
+            _generic = attributes["generic"] as NSData
         }
-    }
-}
-
-
-public class InternetKey: Key, KeyProtocol {
-    
-    var accessibility: CFStringRef {
-        get {
-            return _accessibility
-        }
-        set {
-            _accessibility = newValue
-        }
-    }
-    
-    public override required init(attributes: Dictionary<String, Any>) {
-        super.init(attributes: attributes)
     }
 }
 
 /*
 TODO: Implement these classes
+
+public class InternetKey: Key, KeyProtocol {
+}
 
 public class Certificate: Key, KeyProtocol {
 }
