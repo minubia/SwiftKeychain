@@ -15,6 +15,7 @@ SwiftKeychain is a library written in swift, for Apple's password management sys
 	- [Find Key](#find-key)
 	- [Update Key](#update-key)
 	- [Delete Key](#delete-key)
+1. [UML Diagram](#uml-diagram)
 	
 ## Requirements
 
@@ -153,6 +154,9 @@ var attributes: [String: Any] = [
 let key = GenericKey(attributes: attributes)
 let resultCode: ResultCode = SwiftKeychain.delete(key)
 ```
+
+## UML Diagram
+![UML Diagram](https://cloud.githubusercontent.com/assets/1453745/5264975/78689044-7a3f-11e4-91a8-4706f844eb5c.png)
 
 ##License
 Copyright © 2014 [Minubia](http://www.minubia.com)
