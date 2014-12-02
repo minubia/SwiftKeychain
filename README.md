@@ -7,15 +7,16 @@ SwiftKeychain is a library written in swift, for Apple's password management sys
 
 ##Table of contents
 1. [Requirements](#requirements)
-1. [Installation](#installation)
-1. [Usage](#usage)
+2. [Installation](#installation)
+3. [Usage](#usage)
 	- [Keys](#keys)
 		- [Generic Key](#generic-key)
 	- [Add Key](#add-key)
 	- [Find Key](#find-key)
 	- [Update Key](#update-key)
 	- [Delete Key](#delete-key)
-1. [UML Diagram](#uml-diagram)
+4. [UML Diagram](#uml-diagram)
+5. [License](#license)
 	
 ## Requirements
 
