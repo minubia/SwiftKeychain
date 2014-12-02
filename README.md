@@ -145,7 +145,14 @@ let resultCode: ResultCode = SwiftKeychain.update(key)
 ```
 
 ### Delete Key
-Not yet available
+```swift
+var attributes: [String: Any] = [
+	"username": "admin"
+]
+
+let key = GenericKey(attributes: attributes)
+let resultCode: ResultCode = SwiftKeychain.delete(key)
+```
 
 ##License
 Copyright © 2014 [Minubia](http://www.minubia.com)
