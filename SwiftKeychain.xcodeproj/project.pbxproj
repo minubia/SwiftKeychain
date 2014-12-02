@@ -8,6 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		AB0979121A18CA9700FBA9D8 /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0979111A18CA9700FBA9D8 /* Key.swift */; };
+		AB424BA21A2DDC4A00DD2E25 /* KeyProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB424BA11A2DDC4A00DD2E25 /* KeyProtocol.swift */; };
+		AB424BA41A2DDC8600DD2E25 /* PasswordKeyProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB424BA31A2DDC8600DD2E25 /* PasswordKeyProtocol.swift */; };
+		AB424BA61A2DDCF700DD2E25 /* PasswordKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB424BA51A2DDCF700DD2E25 /* PasswordKey.swift */; };
+		AB424BA81A2DDD2200DD2E25 /* GenericKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB424BA71A2DDD2200DD2E25 /* GenericKey.swift */; };
+		AB424BAA1A2DDD5A00DD2E25 /* InternetKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB424BA91A2DDD5A00DD2E25 /* InternetKey.swift */; };
+		AB424BAC1A2DDD6800DD2E25 /* Certificate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB424BAB1A2DDD6800DD2E25 /* Certificate.swift */; };
+		AB424BAE1A2DDDA500DD2E25 /* CryptographicKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB424BAD1A2DDDA500DD2E25 /* CryptographicKey.swift */; };
 		AB84DBA81A0F49B10018AD57 /* SwiftKeychain.h in Headers */ = {isa = PBXBuildFile; fileRef = AB84DBA71A0F49B10018AD57 /* SwiftKeychain.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		AB84DBAE1A0F49B10018AD57 /* SwiftKeychain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB84DBA21A0F49B10018AD57 /* SwiftKeychain.framework */; };
 		AB84DBB51A0F49B10018AD57 /* SwiftKeychainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB84DBB41A0F49B10018AD57 /* SwiftKeychainTests.swift */; };
@@ -26,6 +33,13 @@
 
 /* Begin PBXFileReference section */
 		AB0979111A18CA9700FBA9D8 /* Key.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Key.swift; sourceTree = "<group>"; };
+		AB424BA11A2DDC4A00DD2E25 /* KeyProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyProtocol.swift; sourceTree = "<group>"; };
+		AB424BA31A2DDC8600DD2E25 /* PasswordKeyProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordKeyProtocol.swift; sourceTree = "<group>"; };
+		AB424BA51A2DDCF700DD2E25 /* PasswordKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordKey.swift; sourceTree = "<group>"; };
+		AB424BA71A2DDD2200DD2E25 /* GenericKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenericKey.swift; sourceTree = "<group>"; };
+		AB424BA91A2DDD5A00DD2E25 /* InternetKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InternetKey.swift; sourceTree = "<group>"; };
+		AB424BAB1A2DDD6800DD2E25 /* Certificate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Certificate.swift; sourceTree = "<group>"; };
+		AB424BAD1A2DDDA500DD2E25 /* CryptographicKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptographicKey.swift; sourceTree = "<group>"; };
 		AB84DBA21A0F49B10018AD57 /* SwiftKeychain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftKeychain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AB84DBA61A0F49B10018AD57 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AB84DBA71A0F49B10018AD57 /* SwiftKeychain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftKeychain.h; sourceTree = "<group>"; };
@@ -79,6 +93,13 @@
 				AB84DBA51A0F49B10018AD57 /* Supporting Files */,
 				AB0979111A18CA9700FBA9D8 /* Key.swift */,
 				AB84DBBE1A0F49DF0018AD57 /* SwiftKeychain.swift */,
+				AB424BA11A2DDC4A00DD2E25 /* KeyProtocol.swift */,
+				AB424BA31A2DDC8600DD2E25 /* PasswordKeyProtocol.swift */,
+				AB424BA51A2DDCF700DD2E25 /* PasswordKey.swift */,
+				AB424BA71A2DDD2200DD2E25 /* GenericKey.swift */,
+				AB424BA91A2DDD5A00DD2E25 /* InternetKey.swift */,
+				AB424BAB1A2DDD6800DD2E25 /* Certificate.swift */,
+				AB424BAD1A2DDDA500DD2E25 /* CryptographicKey.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -216,7 +237,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				AB0979121A18CA9700FBA9D8 /* Key.swift in Sources */,
+				AB424BAA1A2DDD5A00DD2E25 /* InternetKey.swift in Sources */,
 				ABB158E81A1D54E400B48769 /* SwiftKeychain.swift in Sources */,
+				AB424BA41A2DDC8600DD2E25 /* PasswordKeyProtocol.swift in Sources */,
+				AB424BAE1A2DDDA500DD2E25 /* CryptographicKey.swift in Sources */,
+				AB424BA81A2DDD2200DD2E25 /* GenericKey.swift in Sources */,
+				AB424BA21A2DDC4A00DD2E25 /* KeyProtocol.swift in Sources */,
+				AB424BA61A2DDCF700DD2E25 /* PasswordKey.swift in Sources */,
+				AB424BAC1A2DDD6800DD2E25 /* Certificate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
