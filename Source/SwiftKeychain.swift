@@ -231,3 +231,29 @@ public func update<Key>(key: Key ) -> ResultCode {
     }
     return resultCode
 }
+
+public func delete<Key>(key: Key ) -> ResultCode {
+    
+    var resultCode : ResultCode!
+    let kSecClassKey = NSString(format: kSecClass)
+    
+    if key is GenericKey{
+        let genericKey = key as GenericKey
+        
+        // =============== Query to match the key to be deleted ===============
+        var keychainQuery: NSMutableDictionary = NSMutableDictionary(
+            objects: [
+                NSString(format: kSecClassGenericPassword),
+                genericKey.account
+            ],
+            forKeys: [
+                NSString(format: kSecClass),
+                NSString(format: kSecAttrAccount)
+            ]
+        )
+        
+        let statusCode: OSStatus = SecItemDelete(keychainQuery);
+        resultCode = ResultCode(rawValue: statusCode)
+    }
+    return resultCode
+}

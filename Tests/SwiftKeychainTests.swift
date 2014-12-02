@@ -123,6 +123,34 @@ class SwiftKeychainTests: XCTestCase {
         XCTAssertEqual(searchResult.result as String, newPassword)
     }
     
+    func testDeleteKey() {
+        
+        // =============== Add A Test Key ===============
+        var attributes: [String: Any] = [
+            "username": "admin",
+            "password": "demo",
+            "accessibility": Accessibility.WhenUnlocked,
+            "service": NSBundle.mainBundle().bundleIdentifier,
+            "accessgroup": "swiftkeychaingroup",
+            "description": "SwiftKeychain Test Account",
+            "comment": "Used for testing purposes",
+            "label": "Test Account"
+        ]
+        let key = GenericKey(attributes: attributes)
+        let addResultCode: ResultCode = SwiftKeychain.add(key)
+        XCTAssertEqual(addResultCode, ResultCode.success)
+        
+        // =============== Delete a Key ===============
+        
+        var keyToBeDeletedAttributes: [String: Any] = [
+            "username": "admin"
+        ]
+        let keyToBeDeleted = GenericKey(attributes: keyToBeDeletedAttributes)
+        
+        let deleteResultCode: ResultCode = SwiftKeychain.delete(keyToBeDeleted)
+        XCTAssertEqual(deleteResultCode, ResultCode.success)
+    }
+    
     func deleteTestKey() {
         
         var keychainQuery: NSMutableDictionary = NSMutableDictionary(
