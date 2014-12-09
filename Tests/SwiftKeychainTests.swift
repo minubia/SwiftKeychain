@@ -31,6 +31,7 @@ class SwiftKeychainTests: XCTestCase {
     
     override func tearDown() {
         deleteTestKey()
+        clearKeychain()
         super.tearDown()
     }
     
@@ -165,6 +166,20 @@ class SwiftKeychainTests: XCTestCase {
                 NSString(format: kSecAttrAccount)
             ]
         )
+        let statusCode: OSStatus = SecItemDelete(keychainQuery);
+    }
+    
+    func clearKeychain() {
+        
+        var keychainQuery: NSMutableDictionary = NSMutableDictionary(
+            objects: [
+                NSString(format: kSecClassGenericPassword)
+            ],
+            forKeys: [
+                NSString(format: kSecClass)
+            ]
+        )
+        
         let statusCode: OSStatus = SecItemDelete(keychainQuery);
     }
 }

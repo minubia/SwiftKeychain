@@ -190,11 +190,13 @@ public func find(key: Key) -> (resultCode: ResultCode, result: AnyObject) {
         let statusCode: OSStatus = SecItemCopyMatching(keychainQuery, &result);        
         resultCode = ResultCode(rawValue: statusCode)
 
-        let opaque = result?.toOpaque()
-        if let op = opaque? {
+        if(resultCode == ResultCode.success){
+            let opaque = result?.toOpaque()
+            if let op = opaque? {
             
-            let retrievedData = Unmanaged<NSData>.fromOpaque(op).takeUnretainedValue()
-            output = NSString(data: retrievedData, encoding: NSUTF8StringEncoding)
+                let retrievedData = Unmanaged<NSData>.fromOpaque(op).takeUnretainedValue()
+                output = NSString(data: retrievedData, encoding: NSUTF8StringEncoding)
+            }
         }
     }
     
