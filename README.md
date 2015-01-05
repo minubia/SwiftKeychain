@@ -81,6 +81,8 @@ var attributes: [String: Any] = [
 ```
 ######Access Group 
 Access groups can be used to share keychain items among two or more applications. By default no access group will be set meaning only the application that set the keychain item will be able to access it.
+
+**Note: Apps that are built for the simulator aren't signed, so there's no keychain access group for the simulator to check. This means that all apps can see all keychain items when run on the simulator.**
 ```swift
 var attributes: [String: Any] = [
     "accessgroup":	"swiftkeychaingroup"
