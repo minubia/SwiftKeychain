@@ -87,7 +87,8 @@ public enum ResultCode : Int32, Printable {
     case itemNotFound           = -25300
     case interactionNotAllowed  = -25308
     case decode                 = -26275
-    
+    // =============== Warning: -25243 is undocumented by Apple ===============
+    case noAccessForItem        = -25243
     
     public var description : String {
         get {
@@ -112,6 +113,8 @@ public enum ResultCode : Int32, Printable {
                 return "Interaction with the Security Server is not allowed"
             case .decode:
                 return "Unable to decode the provided data"
+            case .noAccessForItem:
+                return "No Access For Item"
             default:
                 return "Unknown"
             }
@@ -144,12 +147,23 @@ public func add<Key>(key: Key ) -> ResultCode {
             kSecClassKey:           kSecClassValue,
             kSecAttrAccountKey:     genericKey.account,
             kSecAttrAccessibleKey:  genericKey.accessibility,
-            //kSecAttrAccessGroupKey: genericKey.accessGroup,
             kSecAttrDescriptionKey: genericKey.description,
             kSecAttrCommentKey:     genericKey.comment,
             kSecAttrLabelKey:       genericKey.label,
             kSecAttrServiceKey:     genericKey.service
             ] as NSMutableDictionary
+        
+        // Ignore the access group if running on the simulator.
+        //
+        // Apps that are built for the simulator aren't signed, so there's no keychain access group
+        // for the simulator to check. This means that all apps can see all keychain items when run
+        // on the simulator.
+        //
+        // If a SecItem contains an access group attribute, SecItemAdd and SecItemUpdate on the
+        // simulator will return -25243 (errSecNoAccessForItem).
+        #if (!(arch(i386) || arch(x86_64)) && os(iOS))
+            attributes[kSecAttrAccessGroupKey] = genericKey.accessGroup
+        #endif
         
         attributes[kSecValueDataKey] = genericKey.password.dataUsingEncoding(NSUTF8StringEncoding)
 

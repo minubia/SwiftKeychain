@@ -99,7 +99,6 @@ class SwiftKeychainTests: XCTestCase {
         XCTAssertEqual(addResultCode, ResultCode.success)
         
         // =============== Update a Key ===============
-        
         let newPassword = "newpassword"
         
         var keyToBeUpdatedAttributes: [String: Any] = [
@@ -112,7 +111,6 @@ class SwiftKeychainTests: XCTestCase {
         XCTAssertEqual(updateResultCode, ResultCode.success)
         
         // =============== Find a Key ===============
-        
         var keyToBeFoundAttributes: [String: Any] = [
             "username": "admin"
         ]
@@ -142,7 +140,6 @@ class SwiftKeychainTests: XCTestCase {
         XCTAssertEqual(addResultCode, ResultCode.success)
         
         // =============== Delete a Key ===============
-        
         var keyToBeDeletedAttributes: [String: Any] = [
             "username": "admin"
         ]
