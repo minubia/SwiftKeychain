@@ -131,8 +131,8 @@ let resultCode: ResultCode = SwiftKeychain.add(key)
 var attributes: [String: Any] = [
 	"username": "admin"
 ]
-let key = GenericKey(attributes: attributes)
-let result = SwiftKeychain.find(key)
+var key = GenericKey(attributes: attributes)
+let resultCode = SwiftKeychain.find(&key)
 ```
 
 ### Update Key

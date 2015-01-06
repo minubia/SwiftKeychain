@@ -129,28 +129,15 @@ public func add<Key>(key: Key ) -> ResultCode {
 
     if key is GenericKey{
         let genericKey = key as GenericKey
-        
-        // =============== Mandatory Attributes ===============
-        let kSecClassValue      = NSString(format: kSecClassGenericPassword)
-        let kSecAttrAccountKey   = NSString(format: kSecAttrAccount)
-        let kSecValueDataKey    = NSString(format: kSecValueData)
-        
-        // =============== Optional Attributes ===============
-        let kSecAttrAccessibleKey = NSString(format: kSecAttrAccessible)
-        let kSecAttrAccessGroupKey = NSString(format: kSecAttrAccessGroup)
-        let kSecAttrDescriptionKey = NSString(format: kSecAttrDescription)
-        let kSecAttrCommentKey = NSString(format: kSecAttrComment)
-        let kSecAttrLabelKey = NSString(format: kSecAttrLabel)
-        let kSecAttrServiceKey = NSString(format: kSecAttrService)
 
         var attributes = [
-            kSecClassKey:           kSecClassValue,
-            kSecAttrAccountKey:     genericKey.account,
-            kSecAttrAccessibleKey:  genericKey.accessibility,
-            kSecAttrDescriptionKey: genericKey.description,
-            kSecAttrCommentKey:     genericKey.comment,
-            kSecAttrLabelKey:       genericKey.label,
-            kSecAttrServiceKey:     genericKey.service
+            kSecClassKey:           NSString(format: kSecClassGenericPassword),
+            NSString(format: kSecAttrAccount):     genericKey.account,
+            NSString(format: kSecAttrAccessible):  genericKey.accessibility,
+            NSString(format: kSecAttrDescription): genericKey.description,
+            NSString(format: kSecAttrComment):     genericKey.comment,
+            NSString(format: kSecAttrLabel):       genericKey.label,
+            NSString(format: kSecAttrService):     genericKey.service
             ] as NSMutableDictionary
         
         // Ignore the access group if running on the simulator.
@@ -162,10 +149,10 @@ public func add<Key>(key: Key ) -> ResultCode {
         // If a SecItem contains an access group attribute, SecItemAdd and SecItemUpdate on the
         // simulator will return -25243 (errSecNoAccessForItem).
         #if (!(arch(i386) || arch(x86_64)) && os(iOS))
-            attributes[kSecAttrAccessGroupKey] = genericKey.accessGroup
+            attributes[NSString(format: kSecAttrAccessGroup)] = genericKey.accessGroup
         #endif
         
-        attributes[kSecValueDataKey] = genericKey.password.dataUsingEncoding(NSUTF8StringEncoding)
+        attributes[NSString(format: kSecValueData)] = genericKey.password.dataUsingEncoding(NSUTF8StringEncoding)
 
         let statusCode: OSStatus = SecItemAdd(attributes, nil);
         resultCode = ResultCode(rawValue: statusCode)
@@ -174,10 +161,9 @@ public func add<Key>(key: Key ) -> ResultCode {
     return resultCode
 }
 
-public func find(key: Key) -> (resultCode: ResultCode, result: AnyObject) {
+public func find<T>(inout key: T) -> (ResultCode) {
     
     var resultCode :    ResultCode!
-    var output:         AnyObject! = ""
     let kSecClassKey = NSString(format: kSecClass)
     
     if key is GenericKey{
@@ -189,6 +175,7 @@ public func find(key: Key) -> (resultCode: ResultCode, result: AnyObject) {
                 genericKey.service,
                 genericKey.account,
                 kCFBooleanTrue,
+                kCFBooleanTrue,
                 NSString(format: kSecMatchLimitOne),
             ],
             forKeys:    [
@@ -196,25 +183,49 @@ public func find(key: Key) -> (resultCode: ResultCode, result: AnyObject) {
                 NSString(format: kSecAttrService),
                 NSString(format: kSecAttrAccount),
                 NSString(format: kSecReturnData),
+                NSString(format: kSecReturnAttributes),
                 NSString(format: kSecMatchLimit),
             ]
         )
-        
+
         var result: Unmanaged<AnyObject>?
         let statusCode: OSStatus = SecItemCopyMatching(keychainQuery, &result);        
         resultCode = ResultCode(rawValue: statusCode)
-
+        
         if(resultCode == ResultCode.success){
-            let opaque = result?.toOpaque()
-            if let op = opaque? {
+            let foundAttributes = result?.takeUnretainedValue() as CFMutableDictionaryRef
+            //=============== Username ===============
+            var usernameValue = CFDictionaryGetValue(foundAttributes, unsafeAddressOf(kSecAttrAccount))
+            let usernameString: NSString = unsafeBitCast(usernameValue, NSString.self)
             
-                let retrievedData = Unmanaged<NSData>.fromOpaque(op).takeUnretainedValue()
-                output = NSString(data: retrievedData, encoding: NSUTF8StringEncoding)
-            }
+            //=============== Password ===============
+            var passwordValue = CFDictionaryGetValue(foundAttributes, unsafeAddressOf(kSecValueData))
+            let passwordData: NSData = unsafeBitCast(passwordValue, NSData.self)
+            let password = NSString(data: passwordData, encoding: NSUTF8StringEncoding)
+            
+            //=============== Description ===============
+            var descriptionValue = CFDictionaryGetValue(foundAttributes, unsafeAddressOf(kSecAttrDescription))
+            let descriptionString: NSString = unsafeBitCast(descriptionValue, NSString.self)
+            
+            //=============== Comment ===============
+            var commentValue = CFDictionaryGetValue(foundAttributes, unsafeAddressOf(kSecAttrComment))
+            let commentString: NSString = unsafeBitCast(commentValue, NSString.self)
+            
+            //=============== isNegative ===============
+            var isNegativeValue = CFDictionaryGetValue(foundAttributes, unsafeAddressOf(kSecAttrIsNegative))
+            let isNegativeBool: CFBooleanRef = unsafeBitCast(isNegativeValue, CFBooleanRef.self)
+            
+            genericKey.account          = usernameString
+            genericKey.password         = password!
+            genericKey.description      = descriptionString
+            genericKey.comment          = commentString
+            genericKey.isNegative       = isNegativeBool
+            
+            return resultCode
         }
     }
-    
-    return (resultCode, output)
+
+    return resultCode
 }
 
 public func update<Key>(key: Key ) -> ResultCode {
@@ -241,6 +252,21 @@ public func update<Key>(key: Key ) -> ResultCode {
 
         var attributes = NSMutableDictionary()
         attributes[NSString(format: kSecValueData)] = genericKey.password.dataUsingEncoding(NSUTF8StringEncoding)
+        attributes[NSString(format: kSecAttrDescription)] = genericKey.description
+        attributes[NSString(format: kSecAttrComment)] = genericKey.comment
+        attributes[NSString(format: kSecAttrIsNegative)] = genericKey.isNegative
+        
+        // Ignore the access group if running on the simulator.
+        //
+        // Apps that are built for the simulator aren't signed, so there's no keychain access group
+        // for the simulator to check. This means that all apps can see all keychain items when run
+        // on the simulator.
+        //
+        // If a SecItem contains an access group attribute, SecItemAdd and SecItemUpdate on the
+        // simulator will return -25243 (errSecNoAccessForItem).
+        #if (!(arch(i386) || arch(x86_64)) && os(iOS))
+            attributes[kSecAttrAccessGroupKey] = genericKey.accessGroup
+        #endif
         
         let statusCode: OSStatus = SecItemUpdate(keychainQuery,attributes);
         resultCode = ResultCode(rawValue: statusCode)

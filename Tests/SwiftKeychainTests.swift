@@ -26,6 +26,8 @@ import XCTest
 class SwiftKeychainTests: XCTestCase {
     
     override func setUp() {
+        deleteTestKey()
+        clearKeychain()
         super.setUp()
     }
     
@@ -49,6 +51,7 @@ class SwiftKeychainTests: XCTestCase {
         ]
         
         let key = GenericKey(attributes: attributes)
+        let genericKey = key as GenericKey
         let resultCode: ResultCode = SwiftKeychain.add(key)
 
         XCTAssertEqual(resultCode, ResultCode.success)
@@ -75,10 +78,10 @@ class SwiftKeychainTests: XCTestCase {
             "username":         "admin"
         ]
         
-        let keyToBeFound = GenericKey(attributes: keyToBeFoundAttributes)
+        var keyToBeFound = GenericKey(attributes: keyToBeFoundAttributes)
         // =============== Find a Key ===============
-        let result = SwiftKeychain.find(keyToBeFound)
-        XCTAssertEqual(result.resultCode, ResultCode.success)
+        let foundResultCode = SwiftKeychain.find(&keyToBeFound)
+        XCTAssertEqual(foundResultCode, ResultCode.success)
     }
     
     func testUpdateKey() {
@@ -99,11 +102,17 @@ class SwiftKeychainTests: XCTestCase {
         XCTAssertEqual(addResultCode, ResultCode.success)
         
         // =============== Update a Key ===============
-        let newPassword = "newpassword"
+        let newPassword     = "newpassword"
+        let newDescription  = "SwiftKeychain Test Account Updated"
+        let newComment      = "Comment updated"
+        let newIsNegative   = true
         
         var keyToBeUpdatedAttributes: [String: Any] = [
             "username": "admin",
-            "password": newPassword
+            "password": newPassword,
+            "description": newDescription,
+            "comment": newComment,
+            "isNegative": newIsNegative
         ]
         let keyToBeUpdated = GenericKey(attributes: keyToBeUpdatedAttributes)
         
@@ -112,14 +121,18 @@ class SwiftKeychainTests: XCTestCase {
         
         // =============== Find a Key ===============
         var keyToBeFoundAttributes: [String: Any] = [
-            "username": "admin"
+            "username": "admin",
         ]
-        let keyToBeFound = GenericKey(attributes: keyToBeFoundAttributes)
+        var keyToBeFound = GenericKey(attributes: keyToBeFoundAttributes)
         
-        let searchResult = SwiftKeychain.find(keyToBeFound)
-        XCTAssertEqual(searchResult.resultCode, ResultCode.success)
+        let resultCode = SwiftKeychain.find(&keyToBeFound)
+        XCTAssertEqual(resultCode, ResultCode.success)
+
+        XCTAssertEqual(keyToBeFound.password as String, newPassword)
+        XCTAssertEqual(keyToBeFound.description as String, newDescription)
+        XCTAssertEqual(keyToBeFound.comment as String, newComment)
+        XCTAssertTrue(keyToBeFound.isNegative as Bool)
         
-        XCTAssertEqual(searchResult.result as String, newPassword)
     }
     
     func testDeleteKey() {

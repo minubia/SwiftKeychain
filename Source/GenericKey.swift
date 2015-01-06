@@ -27,7 +27,7 @@ public class GenericKey: PasswordKey {
     private var _service:           CFStringRef = ""
     private var _generic:           CFDataRef!
     
-    var service: CFStringRef {
+    public var service: CFStringRef {
         get {
             return _service
         }
@@ -36,7 +36,7 @@ public class GenericKey: PasswordKey {
         }
     }
     
-    var generic: CFDataRef {
+    public var generic: CFDataRef {
         get {
             return _generic
         }

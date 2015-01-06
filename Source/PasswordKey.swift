@@ -31,24 +31,24 @@ public class PasswordKey: Key, PasswordKeyProtocol {
     private var _creator:           CFNumberRef!
     private var _account:           CFStringRef!
     private var _isInvisible:       CFBooleanRef!
-    private var _isNegative:        CFBooleanRef!
+    private var _isNegative:        CFBooleanRef = false
     private var _type:              CFNumberRef!
     
     private var _password:          NSData!
     
-    var creationDate: CFDateRef {
+    public var creationDate: CFDateRef {
         get {
             return _creationDate
         }
     }
     
-    var modificationDate: CFDateRef {
+    public var modificationDate: CFDateRef {
         get {
             return _modificationDate
         }
     }
     
-    var description: CFStringRef {
+    public var description: CFStringRef {
         get {
             return _description
         }
@@ -57,7 +57,7 @@ public class PasswordKey: Key, PasswordKeyProtocol {
         }
     }
     
-    var comment: CFStringRef {
+    public var comment: CFStringRef {
         get {
             return _comment
         }
@@ -66,7 +66,7 @@ public class PasswordKey: Key, PasswordKeyProtocol {
         }
     }
     
-    var creator: CFNumberRef {
+    public var creator: CFNumberRef {
         get {
             return _creator
         }
@@ -75,7 +75,7 @@ public class PasswordKey: Key, PasswordKeyProtocol {
         }
     }
     
-    var account: CFStringRef {
+    public var account: CFStringRef {
         get {
             return _account
         }
@@ -84,7 +84,7 @@ public class PasswordKey: Key, PasswordKeyProtocol {
         }
     }
     
-    var isInvisible: CFBooleanRef {
+    public var isInvisible: CFBooleanRef {
         get {
             return _isInvisible
         }
@@ -93,7 +93,7 @@ public class PasswordKey: Key, PasswordKeyProtocol {
         }
     }
     
-    var isNegative: CFBooleanRef {
+    public var isNegative: CFBooleanRef {
         get {
             return _isNegative
         }
@@ -102,7 +102,7 @@ public class PasswordKey: Key, PasswordKeyProtocol {
         }
     }
     
-    var type: CFNumberRef {
+    public var type: CFNumberRef {
         get {
             return _type
         }
@@ -111,7 +111,7 @@ public class PasswordKey: Key, PasswordKeyProtocol {
         }
     }
     
-    var password: NSString {
+    public var password: NSString {
         get {
             return NSString(data: _password, encoding: NSUTF8StringEncoding)!
         }
@@ -127,6 +127,15 @@ public class PasswordKey: Key, PasswordKeyProtocol {
         account     = attributes["username"] as String
         if((attributes["password"]) != nil){
             password    = attributes["password"] as String
+        }
+        if((attributes["description"]) != nil){
+            description    = attributes["description"] as String
+        }
+        if((attributes["comment"]) != nil){
+            comment    = attributes["comment"] as String
+        }
+        if((attributes["isNegative"]) != nil){
+            isNegative    = attributes["isNegative"] as CFBooleanRef
         }
     }
 }
