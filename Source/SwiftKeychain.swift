@@ -149,6 +149,7 @@ public func add<Key>(key: Key ) -> ResultCode {
         // If a SecItem contains an access group attribute, SecItemAdd and SecItemUpdate on the
         // simulator will return -25243 (errSecNoAccessForItem).
         #if (!(arch(i386) || arch(x86_64)) && os(iOS))
+            let kSecAttrAccessGroupKey = NSString(format: kSecAttrAccessGroup)
             attributes[NSString(format: kSecAttrAccessGroup)] = genericKey.accessGroup
         #endif
         

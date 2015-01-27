@@ -9,13 +9,13 @@ set -e
 
 function run_tests {
     osascript -e 'tell app "iOS Simulator" to quit'
-    xcodebuild -project SwiftKeychain.xcodeproj -scheme "SwiftKeychain" -configuration "Debug" -sdk "iphonesimulator$BUILD_IOS_SDK_VERSION" -destination "name=iPad Air,OS=$RUNTIME_IOS_SDK_VERSION" build test
+    xcodebuild -project SwiftKeychain.xcodeproj -scheme "SwiftKeychain" -configuration "Debug" -sdk "iphoneos$BUILD_IOS_SDK_VERSION" -destination "name=iPad Air,OS=$RUNTIME_IOS_SDK_VERSION" build test
 
     osascript -e 'tell app "iOS Simulator" to quit'
-    xcodebuild -project SwiftKeychain.xcodeproj -scheme "SwiftKeychain" -configuration "Debug" -sdk "iphonesimulator$BUILD_IOS_SDK_VERSION" -destination "name=iPhone 5s,OS=$RUNTIME_IOS_SDK_VERSION" build test
+    xcodebuild -project SwiftKeychain.xcodeproj -scheme "SwiftKeychain" -configuration "Debug" -sdk "iphoneos$BUILD_IOS_SDK_VERSION" -destination "name=iPhone 5s,OS=$RUNTIME_IOS_SDK_VERSION" build test
 
     osascript -e 'tell app "iOS Simulator" to quit'
-    xcodebuild -project SwiftKeychain.xcodeproj -scheme "SwiftKeychain" -configuration "Debug" -sdk "iphonesimulator$BUILD_IOS_SDK_VERSION" -destination "name=iPhone 6,OS=$RUNTIME_IOS_SDK_VERSION" build test
+    xcodebuild -project SwiftKeychain.xcodeproj -scheme "SwiftKeychain" -configuration "Debug" -sdk "iphoneos$BUILD_IOS_SDK_VERSION" -destination "name=iPhone 6,OS=$RUNTIME_IOS_SDK_VERSION" build test
 }
 
 function main {
