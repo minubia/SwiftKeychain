@@ -79,31 +79,31 @@ public class Certificate: Key {
         super.init(attributes: attributes)
         
         if((attributes["subject"]) != nil){
-            _subject = attributes["subject"] as NSData
+            _subject = attributes["subject"] as! NSData
         }
         
         if((attributes["issuer"]) != nil){
-            _issuer = attributes["issuer"] as NSData
+            _issuer = attributes["issuer"] as! NSData
         }
         
         if((attributes["serialNumber"]) != nil){
-            _serialNumber = attributes["serialNumber"] as NSData
+            _serialNumber = attributes["serialNumber"]as! NSData
         }
         
         if((attributes["subjectKeyID"]) != nil){
-            _subjectKeyID = attributes["subjectKeyID"] as NSData
+            _subjectKeyID = attributes["subjectKeyID"] as! NSData
         }
         
         if((attributes["publicKeyHash"]) != nil){
-            _publicKeyHash = attributes["publicKeyHash"] as NSData
+            _publicKeyHash = attributes["publicKeyHash"] as! NSData
         }
         
         if((attributes["certificateType"]) != nil){
-            _certificateType = attributes["certificateType"] as CFNumberRef
+            _certificateType = attributes["certificateType"] as! CFNumberRef
         }
         
         if((attributes["certificateEncoding"]) != nil){
-            _certificateEncoding = attributes["certificateEncoding"] as CFNumberRef
+            _certificateEncoding = attributes["certificateEncoding"] as! CFNumberRef
         }
     }
 }

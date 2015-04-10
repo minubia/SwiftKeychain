@@ -58,7 +58,7 @@ public class Key: KeyProtocol {
     public init(attributes: Dictionary<String, Any>) {
         
         if((attributes["accessibility"]) != nil){
-            switch attributes["accessibility"] as Accessibility {
+            switch attributes["accessibility"] as! Accessibility {
             case .WhenUnlocked:
                 _accessibility = kSecAttrAccessibleWhenUnlocked
             case .AfterFirstUnlock:
@@ -79,11 +79,11 @@ public class Key: KeyProtocol {
         }
         
         if((attributes["accessgroup"]) != nil){
-            _accessGroup    = attributes["accessgroup"] as CFStringRef
+            _accessGroup    = attributes["accessgroup"] as! CFStringRef
         }
         
         if((attributes["label"]) != nil){
-            _label    = attributes["label"] as CFStringRef
+            _label    = attributes["label"] as! CFStringRef
         }
     }
 }

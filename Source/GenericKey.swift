@@ -51,11 +51,11 @@ public class GenericKey: PasswordKey {
         
         _service        = NSBundle.mainBundle().bundleIdentifier ?? ""
         if((attributes["service"]) is String){
-            _service = attributes["service"] as CFStringRef
+            _service = attributes["service"] as! CFStringRef
         }
         
         if((attributes["generic"]) != nil){
-            _generic = attributes["generic"] as NSData
+            _generic = attributes["generic"] as! NSData
         }
     }
 }

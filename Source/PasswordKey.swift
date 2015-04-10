@@ -124,18 +124,18 @@ public class PasswordKey: Key, PasswordKeyProtocol {
         
         super.init(attributes: attributes)
         
-        account     = attributes["username"] as String
+        account     = attributes["username"] as! String
         if((attributes["password"]) != nil){
-            password    = attributes["password"] as String
+            password    = attributes["password"] as! String
         }
         if((attributes["description"]) != nil){
-            description    = attributes["description"] as String
+            description    = attributes["description"] as! String
         }
         if((attributes["comment"]) != nil){
-            comment    = attributes["comment"] as String
+            comment    = attributes["comment"] as! String
         }
         if((attributes["isNegative"]) != nil){
-            isNegative    = attributes["isNegative"] as CFBooleanRef
+            isNegative    = attributes["isNegative"] as! CFBooleanRef
         }
     }
 }

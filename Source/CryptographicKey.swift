@@ -172,59 +172,59 @@ public class CryptographicKey: Key {
         super.init(attributes: attributes)
 
         if((attributes["keyClass"]) is String){
-            _keyClass = attributes["keyClass"] as CFStringRef
+            _keyClass = attributes["keyClass"] as! CFStringRef
         }
         
         if((attributes["applicationLabel"]) is String){
-            _applicationLabel = attributes["applicationLabel"] as CFStringRef
+            _applicationLabel = attributes["applicationLabel"] as! CFStringRef
         }
         
         if((attributes["isPermanent"]) != nil){
-            _isPermanent = attributes["isPermanent"] as CFBooleanRef
+            _isPermanent = attributes["isPermanent"] as! CFBooleanRef
         }
         
         if((attributes["applicationTag"]) != nil){
-            _applicationTag = attributes["applicationTag"] as NSData
+            _applicationTag = attributes["applicationTag"] as! NSData
         }
         
         if((attributes["keyType"]) != nil){
-            _keyType = attributes["keyType"] as CFNumberRef
+            _keyType = attributes["keyType"] as! CFNumberRef
         }
         
         if((attributes["keySizeInBits"]) != nil){
-            _keySizeInBits = attributes["keySizeInBits"] as CFNumberRef
+            _keySizeInBits = attributes["keySizeInBits"] as! CFNumberRef
         }
         
         if((attributes["effectiveKeySize"]) != nil){
-            _effectiveKeySize = attributes["effectiveKeySize"] as CFNumberRef
+            _effectiveKeySize = attributes["effectiveKeySize"] as! CFNumberRef
         }
         
         if((attributes["canEncrypt"]) != nil){
-            _canEncrypt = attributes["canEncrypt"] as CFBooleanRef
+            _canEncrypt = attributes["canEncrypt"] as! CFBooleanRef
         }
         
         if((attributes["canDecrypt"]) != nil){
-            _canDecrypt = attributes["canDecrypt"] as CFBooleanRef
+            _canDecrypt = attributes["canDecrypt"] as! CFBooleanRef
         }
         
         if((attributes["canDerive"]) != nil){
-            _canDerive = attributes["canDerive"] as CFBooleanRef
+            _canDerive = attributes["canDerive"] as! CFBooleanRef
         }
         
         if((attributes["canSign"]) != nil){
-            _canSign = attributes["canSign"] as CFBooleanRef
+            _canSign = attributes["canSign"] as! CFBooleanRef
         }
         
         if((attributes["canVerify"]) != nil){
-            _canVerify = attributes["canVerify"] as CFBooleanRef
+            _canVerify = attributes["canVerify"] as! CFBooleanRef
         }
         
         if((attributes["canWrap"]) != nil){
-            _canWrap = attributes["canWrap"] as CFBooleanRef
+            _canWrap = attributes["canWrap"] as! CFBooleanRef
         }
         
         if((attributes["canUnwrap"]) != nil){
-            _canUnwrap = attributes["canUnwrap"] as CFBooleanRef
+            _canUnwrap = attributes["canUnwrap"] as! CFBooleanRef
         }
     }
 }

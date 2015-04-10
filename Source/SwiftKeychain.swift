@@ -128,7 +128,7 @@ public func add<Key>(key: Key ) -> ResultCode {
     let kSecClassKey = NSString(format: kSecClass)
 
     if key is GenericKey{
-        let genericKey = key as GenericKey
+        let genericKey = key as! GenericKey
 
         var attributes = [
             kSecClassKey:           NSString(format: kSecClassGenericPassword),
@@ -168,7 +168,7 @@ public func find<T>(inout key: T) -> (ResultCode) {
     let kSecClassKey = NSString(format: kSecClass)
     
     if key is GenericKey{
-        let genericKey = key as GenericKey
+        let genericKey = key as! GenericKey
         
         var keychainQuery: NSMutableDictionary = NSMutableDictionary(
             objects:    [
@@ -194,7 +194,7 @@ public func find<T>(inout key: T) -> (ResultCode) {
         resultCode = ResultCode(rawValue: statusCode)
         
         if(resultCode == ResultCode.success){
-            let foundAttributes = result?.takeUnretainedValue() as CFMutableDictionaryRef
+            let foundAttributes = result?.takeUnretainedValue() as! CFMutableDictionaryRef
             //=============== Username ===============
             var usernameValue = CFDictionaryGetValue(foundAttributes, unsafeAddressOf(kSecAttrAccount))
             let usernameString: NSString = unsafeBitCast(usernameValue, NSString.self)
@@ -235,7 +235,7 @@ public func update<Key>(key: Key ) -> ResultCode {
     let kSecClassKey = NSString(format: kSecClass)
     
     if key is GenericKey{
-        let genericKey = key as GenericKey
+        let genericKey = key as! GenericKey
         
         // =============== Query to match the key to be updated ===============
         var keychainQuery: NSMutableDictionary = NSMutableDictionary(
@@ -282,7 +282,7 @@ public func delete<Key>(key: Key ) -> ResultCode {
     let kSecClassKey = NSString(format: kSecClass)
     
     if key is GenericKey{
-        let genericKey = key as GenericKey
+        let genericKey = key as! GenericKey
         
         // =============== Query to match the key to be deleted ===============
         var keychainQuery: NSMutableDictionary = NSMutableDictionary(

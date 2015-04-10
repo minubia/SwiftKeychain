@@ -90,27 +90,27 @@ public class InternetKey: PasswordKey {
         super.init(attributes: attributes)
         
         if((attributes["securityDomain"]) is String){
-            _securityDomain = attributes["securityDomain"] as CFStringRef
+            _securityDomain = attributes["securityDomain"] as! CFStringRef
         }
         
         if((attributes["server"]) is String){
-            _server = attributes["server"] as CFStringRef
+            _server = attributes["server"] as! CFStringRef
         }
         
         if((attributes["protocol"]) != nil){
-            _protocol = attributes["protocol"] as CFNumberRef
+            _protocol = attributes["protocol"] as! CFNumberRef
         }
         
         if((attributes["authenticationType"]) != nil){
-            _authenticationType = attributes["authenticationType"] as CFNumberRef
+            _authenticationType = attributes["authenticationType"] as! CFNumberRef
         }
         
         if((attributes["port"]) != nil){
-            _port = attributes["port"] as CFNumberRef
+            _port = attributes["port"] as! CFNumberRef
         }
         
         if((attributes["path"]) is String){
-            _path = attributes["path"] as CFStringRef
+            _path = attributes["path"] as! CFStringRef
         }
     }
 }
