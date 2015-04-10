@@ -20,8 +20,8 @@ Swift Keychain is a library written in swift, for Apple's password management sy
 	
 ## Requirements
 
-- iOS 7.0+
-- Xcode 6.1.1
+- iOS 8.3+
+- Xcode 6.3
 
 ##Installation
 
