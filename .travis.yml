@@ -1,8 +1,8 @@
 language: objective-c
-osx_image: xcode61
+osx_image: xcode7
 
 env:
 matrix:
-- SWIFTKEYCHAIN_RUNTIME_IOS_SDK_VERSION=8.1
-- SWIFTKEYCHAIN_BUILD_IOS_SDK_VERSION=8.1
+- SWIFTKEYCHAIN_RUNTIME_IOS_SDK_VERSION=9.0
+- SWIFTKEYCHAIN_BUILD_IOS_SDK_VERSION=9.0
 script: ./build.sh
