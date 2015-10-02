@@ -39,7 +39,7 @@ class SwiftKeychainTests: XCTestCase {
     
     func testAddGenericKey() {
         
-        var attributes: [String: Any] = [
+        let attributes: [String: Any] = [
         "username":         "admin",
         "password":         "demo",
         "accessibility":    Accessibility.WhenUnlocked,
@@ -51,7 +51,6 @@ class SwiftKeychainTests: XCTestCase {
         ]
         
         let key = GenericKey(attributes: attributes)
-        let genericKey = key as GenericKey
         let resultCode: ResultCode = SwiftKeychain.add(key)
 
         XCTAssertEqual(resultCode, ResultCode.success)
@@ -60,7 +59,7 @@ class SwiftKeychainTests: XCTestCase {
     func testFindKey() {
         
         // =============== Add A Test Key ===============
-        var attributes: [String: Any] = [
+        let attributes: [String: Any] = [
             "username":         "admin",
             "password":         "demo",
             "accessibility":    Accessibility.WhenUnlocked,
@@ -72,9 +71,9 @@ class SwiftKeychainTests: XCTestCase {
         ]
         
         let key = GenericKey(attributes: attributes)
-        let resultCode: ResultCode = SwiftKeychain.add(key)        
+        SwiftKeychain.add(key)
         
-        var keyToBeFoundAttributes: [String: Any] = [
+        let keyToBeFoundAttributes: [String: Any] = [
             "username":         "admin"
         ]
         
@@ -87,7 +86,7 @@ class SwiftKeychainTests: XCTestCase {
     func testUpdateKey() {
         
         // =============== Add A Test Key ===============
-        var attributes: [String: Any] = [
+        let attributes: [String: Any] = [
             "username": "admin",
             "password": "demo",
             "accessibility": Accessibility.WhenUnlocked,
@@ -107,7 +106,7 @@ class SwiftKeychainTests: XCTestCase {
         let newComment      = "Comment updated"
         let newIsNegative   = true
         
-        var keyToBeUpdatedAttributes: [String: Any] = [
+        let keyToBeUpdatedAttributes: [String: Any] = [
             "username": "admin",
             "password": newPassword,
             "description": newDescription,
@@ -120,7 +119,7 @@ class SwiftKeychainTests: XCTestCase {
         XCTAssertEqual(updateResultCode, ResultCode.success)
         
         // =============== Find a Key ===============
-        var keyToBeFoundAttributes: [String: Any] = [
+        let keyToBeFoundAttributes: [String: Any] = [
             "username": "admin",
         ]
         var keyToBeFound = GenericKey(attributes: keyToBeFoundAttributes)
@@ -138,7 +137,7 @@ class SwiftKeychainTests: XCTestCase {
     func testDeleteKey() {
         
         // =============== Add A Test Key ===============
-        var attributes: [String: Any] = [
+        let attributes: [String: Any] = [
             "username": "admin",
             "password": "demo",
             "accessibility": Accessibility.WhenUnlocked,
@@ -153,7 +152,7 @@ class SwiftKeychainTests: XCTestCase {
         XCTAssertEqual(addResultCode, ResultCode.success)
         
         // =============== Delete a Key ===============
-        var keyToBeDeletedAttributes: [String: Any] = [
+        let keyToBeDeletedAttributes: [String: Any] = [
             "username": "admin"
         ]
         let keyToBeDeleted = GenericKey(attributes: keyToBeDeletedAttributes)
@@ -164,7 +163,7 @@ class SwiftKeychainTests: XCTestCase {
     
     func deleteTestKey() {
         
-        var keychainQuery: NSMutableDictionary = NSMutableDictionary(
+        let keychainQuery: NSMutableDictionary = NSMutableDictionary(
             objects:    [
                 NSString(format: kSecClassGenericPassword),
                 "",
@@ -176,12 +175,12 @@ class SwiftKeychainTests: XCTestCase {
                 NSString(format: kSecAttrAccount)
             ]
         )
-        let statusCode: OSStatus = SecItemDelete(keychainQuery);
+        SecItemDelete(keychainQuery);
     }
     
     func clearKeychain() {
         
-        var keychainQuery: NSMutableDictionary = NSMutableDictionary(
+        let keychainQuery: NSMutableDictionary = NSMutableDictionary(
             objects: [
                 NSString(format: kSecClassGenericPassword)
             ],
@@ -190,6 +189,6 @@ class SwiftKeychainTests: XCTestCase {
             ]
         )
         
-        let statusCode: OSStatus = SecItemDelete(keychainQuery);
+        SecItemDelete(keychainQuery);
     }
 }

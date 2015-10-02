@@ -75,7 +75,7 @@ public enum Accessibility : RawRepresentable {
     }	
 }
 
-public enum ResultCode : Int32, Printable {
+public enum ResultCode : Int32, CustomStringConvertible {
     
     case success                = 0
     case unimplemented          = -4
@@ -115,8 +115,6 @@ public enum ResultCode : Int32, Printable {
                 return "Unable to decode the provided data"
             case .noAccessForItem:
                 return "No Access For Item"
-            default:
-                return "Unknown"
             }
         }
     }
@@ -165,12 +163,11 @@ public func add<Key>(key: Key ) -> ResultCode {
 public func find<T>(inout key: T) -> (ResultCode) {
     
     var resultCode :    ResultCode!
-    let kSecClassKey = NSString(format: kSecClass)
     
     if key is GenericKey{
         let genericKey = key as! GenericKey
         
-        var keychainQuery: NSMutableDictionary = NSMutableDictionary(
+        let keychainQuery: NSMutableDictionary = NSMutableDictionary(
             objects:    [
                 NSString(format: kSecClassGenericPassword),
                 genericKey.service,
@@ -188,32 +185,35 @@ public func find<T>(inout key: T) -> (ResultCode) {
                 NSString(format: kSecMatchLimit),
             ]
         )
-
+        
         var result: Unmanaged<AnyObject>?
-        let statusCode: OSStatus = SecItemCopyMatching(keychainQuery, &result);        
+        let statusCode = withUnsafeMutablePointer(&result) { SecItemCopyMatching(keychainQuery, UnsafeMutablePointer($0)) }
+        
         resultCode = ResultCode(rawValue: statusCode)
         
         if(resultCode == ResultCode.success){
+            
             let foundAttributes = result?.takeUnretainedValue() as! CFMutableDictionaryRef
+            
             //=============== Username ===============
-            var usernameValue = CFDictionaryGetValue(foundAttributes, unsafeAddressOf(kSecAttrAccount))
+            let usernameValue = CFDictionaryGetValue(foundAttributes, unsafeAddressOf(kSecAttrAccount))
             let usernameString: NSString = unsafeBitCast(usernameValue, NSString.self)
             
             //=============== Password ===============
-            var passwordValue = CFDictionaryGetValue(foundAttributes, unsafeAddressOf(kSecValueData))
+            let passwordValue = CFDictionaryGetValue(foundAttributes, unsafeAddressOf(kSecValueData))
             let passwordData: NSData = unsafeBitCast(passwordValue, NSData.self)
             let password = NSString(data: passwordData, encoding: NSUTF8StringEncoding)
             
             //=============== Description ===============
-            var descriptionValue = CFDictionaryGetValue(foundAttributes, unsafeAddressOf(kSecAttrDescription))
+            let descriptionValue = CFDictionaryGetValue(foundAttributes, unsafeAddressOf(kSecAttrDescription))
             let descriptionString: NSString = unsafeBitCast(descriptionValue, NSString.self)
             
             //=============== Comment ===============
-            var commentValue = CFDictionaryGetValue(foundAttributes, unsafeAddressOf(kSecAttrComment))
+            let commentValue = CFDictionaryGetValue(foundAttributes, unsafeAddressOf(kSecAttrComment))
             let commentString: NSString = unsafeBitCast(commentValue, NSString.self)
             
             //=============== isNegative ===============
-            var isNegativeValue = CFDictionaryGetValue(foundAttributes, unsafeAddressOf(kSecAttrIsNegative))
+            let isNegativeValue = CFDictionaryGetValue(foundAttributes, unsafeAddressOf(kSecAttrIsNegative))
             let isNegativeBool: CFBooleanRef = unsafeBitCast(isNegativeValue, CFBooleanRef.self)
             
             genericKey.account          = usernameString
@@ -224,6 +224,7 @@ public func find<T>(inout key: T) -> (ResultCode) {
             
             return resultCode
         }
+
     }
 
     return resultCode
@@ -232,13 +233,12 @@ public func find<T>(inout key: T) -> (ResultCode) {
 public func update<Key>(key: Key ) -> ResultCode {
     
     var resultCode : ResultCode!
-    let kSecClassKey = NSString(format: kSecClass)
     
     if key is GenericKey{
         let genericKey = key as! GenericKey
         
         // =============== Query to match the key to be updated ===============
-        var keychainQuery: NSMutableDictionary = NSMutableDictionary(
+        let keychainQuery: NSMutableDictionary = NSMutableDictionary(
             objects: [
                 NSString(format: kSecClassGenericPassword),
                 genericKey.account
@@ -279,13 +279,12 @@ public func update<Key>(key: Key ) -> ResultCode {
 public func delete<Key>(key: Key ) -> ResultCode {
     
     var resultCode : ResultCode!
-    let kSecClassKey = NSString(format: kSecClass)
     
     if key is GenericKey{
         let genericKey = key as! GenericKey
         
         // =============== Query to match the key to be deleted ===============
-        var keychainQuery: NSMutableDictionary = NSMutableDictionary(
+        let keychainQuery: NSMutableDictionary = NSMutableDictionary(
             objects: [
                 NSString(format: kSecClassGenericPassword),
                 genericKey.account

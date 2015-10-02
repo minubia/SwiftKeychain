@@ -72,9 +72,7 @@ public class Key: KeyProtocol {
             case .WhenPasscodeSetThisDeviceOnly:
                 _accessibility = kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly
             case .WhenUnlockedThisDeviceOnly:
-                _accessibility = kSecAttrAccessibleWhenUnlockedThisDeviceOnly
-            default:
-                _accessibility = kSecAttrAccessibleWhenUnlocked                
+                _accessibility = kSecAttrAccessibleWhenUnlockedThisDeviceOnly                
             }
         }
         
