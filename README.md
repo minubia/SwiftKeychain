@@ -162,6 +162,6 @@ let resultCode: ResultCode = SwiftKeychain.delete(key)
 ![UML Diagram](https://cloud.githubusercontent.com/assets/1453745/5264975/78689044-7a3f-11e4-91a8-4706f844eb5c.png)
 
 ##License
-Copyright © 2015 [Minubia](http://www.minubia.com)
+Copyright © 2016 [Minubia](http://www.minubia.com)
 
 MIT license - [http://www.opensource.org/licenses/mit-license.php](http://www.opensource.org/licenses/mit-license.php)
